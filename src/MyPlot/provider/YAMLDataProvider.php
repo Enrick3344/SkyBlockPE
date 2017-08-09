@@ -1,20 +1,20 @@
 <?php
+
 namespace MyPlot\provider;
 
 use MyPlot\MyPlot;
 use MyPlot\Plot;
 use pocketmine\utils\Config;
 
-class YAMLDataProvider extends DataProvider
-{
+class YAMLDataProvider extends DataProvider{
 	/** @var MyPlot */
 	protected $plugin;
 	/** @var Config */
 	private $yaml;
 
-	public function __construct(MyPlot $plugin, int $cacheSize = 0) {
+	public function __construct(MyPlot $plugin, int $cacheSize = 0){
 		parent::__construct($plugin, $cacheSize);
-		$this->yaml = new Config($this->plugin->getDataFolder()."Data".DIRECTORY_SEPARATOR."plots.yml", Config::YAML, [
+		$this->yaml = new Config($this->plugin->getDataFolder() . "Data" . DIRECTORY_SEPARATOR . "plots.yml", Config::YAML, [
 			"count" => 0,
 			"plots" => []
 		]);
@@ -24,7 +24,7 @@ class YAMLDataProvider extends DataProvider
 	 * @param Plot $plot
 	 * @return bool
 	 */
-	public function savePlot(Plot $plot) : bool {
+	public function savePlot(Plot $plot): bool{
 		$plots = $this->yaml->get("plots", []);
 		$plots[$plot->id] = [
 			"level" => $plot->levelName,
@@ -40,12 +40,12 @@ class YAMLDataProvider extends DataProvider
 		$this->cachePlot($plot);
 		return $this->yaml->save();
 	}
-	
+
 	/**
 	 * @param Plot $plot
 	 * @return bool
 	 */
-	public function deletePlot(Plot $plot) : bool {
+	public function deletePlot(Plot $plot): bool{
 		$plots = $this->yaml->get("plots", []);
 		unset($plots[$plot->id]);
 		$this->yaml->set("plots", $plots);
@@ -59,8 +59,8 @@ class YAMLDataProvider extends DataProvider
 	 * @param int $Z
 	 * @return Plot
 	 */
-	public function getPlot(string $levelName, int $X, int $Z) : Plot {
-		if (($plot = $this->getPlotFromCache($levelName, $X, $Z)) != null) {
+	public function getPlot(string $levelName, int $X, int $Z): Plot{
+		if (($plot = $this->getPlotFromCache($levelName, $X, $Z)) != null){
 			return $plot;
 		}
 		$plots = $this->yaml->get("plots");
@@ -68,17 +68,17 @@ class YAMLDataProvider extends DataProvider
 		$xKeys = array_keys($plots, $X);
 		$zKeys = array_keys($plots, $Z);
 		$key = null;
-		foreach($levelKeys as $levelKey) {
-			foreach($xKeys as $xKey) {
-				foreach($zKeys as $zKey) {
-					if($zKey == $xKey and $xKey == $levelKey and $zKey == $levelKey) {
+		foreach ($levelKeys as $levelKey){
+			foreach ($xKeys as $xKey){
+				foreach ($zKeys as $zKey){
+					if ($zKey == $xKey and $xKey == $levelKey and $zKey == $levelKey){
 						$key = $levelKey;
 						break 3;
 					}
 				}
 			}
 		}
-		if($key != null) {
+		if ($key != null){
 			$plotName = $plots[$key]["name"] == "" ? "" : $plots[$key]["name"];
 			$owner = $plots[$key]["owner"] == "" ? "" : $plots[$key]["owner"];
 			$helpers = $plots[$key]["helpers"] == [] ? [] : $plots[$key]["helpers"];
@@ -98,16 +98,16 @@ class YAMLDataProvider extends DataProvider
 	 * @param string $levelName
 	 * @return Plot[]
 	 */
-	public function getPlotsByOwner(string $owner, string $levelName = "") : array {
+	public function getPlotsByOwner(string $owner, string $levelName = ""): array{
 
 		$plots = $this->yaml->get("plots");
 		$ownerPlots = [];
-		if($levelName != "") {
+		if ($levelName != ""){
 			$levelKeys = array_keys($plots, $levelName);
 			$ownerKeys = array_keys($plots, $owner);
-			foreach($levelKeys as $levelKey) {
-				foreach($ownerKeys as $ownerKey) {
-					if($levelKey == $ownerKey) {
+			foreach ($levelKeys as $levelKey){
+				foreach ($ownerKeys as $ownerKey){
+					if ($levelKey == $ownerKey){
 						$X = $plots[$levelKey]["x"];
 						$Z = $plots[$levelKey]["x"];
 						$plotName = $plots[$levelKey]["name"] == "" ? "" : $plots[$levelKey]["name"];
@@ -120,9 +120,9 @@ class YAMLDataProvider extends DataProvider
 					}
 				}
 			}
-		}else{
+		} else{
 			$ownerKeys = array_keys($plots, $owner);
-			foreach($ownerKeys as $key) {
+			foreach ($ownerKeys as $key){
 				$levelName = $plots[$key]["level"];
 				$X = $plots[$key]["x"];
 				$Z = $plots[$key]["x"];
@@ -145,40 +145,40 @@ class YAMLDataProvider extends DataProvider
 	 */
 	public function getNextFreePlot(string $levelName, int $limitXZ = 0){
 		$plotsArr = $this->yaml->get("plots", []);
-		for ($i = 0; $limitXZ <= 0 or $i < $limitXZ; $i++) {
+		for ($i = 0; $limitXZ <= 0 or $i < $limitXZ; $i++){
 			$tmp = [];
-			foreach($plotsArr as $id => $data) {
-				if($data["level"] === $levelName) {
-					if(abs($data["x"]) === $i and abs($data["z"]) <= $i) {
+			foreach ($plotsArr as $id => $data){
+				if ($data["level"] === $levelName){
+					if (abs($data["x"]) === $i and abs($data["z"]) <= $i){
 						$tmp[] = [$data["x"], $data["z"]];
-					}elseif(abs($data["z"]) === $i and abs($data["x"]) <= $i) {
+					} elseif (abs($data["z"]) === $i and abs($data["x"]) <= $i){
 						$tmp[] = [$data["x"], $data["z"]];
 					}
 				}
 			}
 			$plots = [];
-			foreach($tmp as $arr) {
+			foreach ($tmp as $arr){
 				$plots[$arr[0]][$arr[1]] = true;
 			}
-			if (count($plots) === max(1, 8 * $i)) {
+			if (count($plots) === max(1, 8 * $i)){
 				continue;
 			}
 
-			if ($ret = self::findEmptyPlotSquared(0, $i, $plots)) {
+			if ($ret = self::findEmptyPlotSquared(0, $i, $plots)){
 				list($X, $Z) = $ret;
 				$plot = new Plot($levelName, $X, $Z);
 				$this->cachePlot($plot);
 				return $plot;
 			}
-			for ($a = 1; $a < $i; $a++) {
-				if ($ret = self::findEmptyPlotSquared($a, $i, $plots)) {
+			for ($a = 1; $a < $i; $a++){
+				if ($ret = self::findEmptyPlotSquared($a, $i, $plots)){
 					list($X, $Z) = $ret;
 					$plot = new Plot($levelName, $X, $Z);
 					$this->cachePlot($plot);
 					return $plot;
 				}
 			}
-			if ($ret = self::findEmptyPlotSquared($i, $i, $plots)) {
+			if ($ret = self::findEmptyPlotSquared($i, $i, $plots)){
 				list($X, $Z) = $ret;
 				$plot = new Plot($levelName, $X, $Z);
 				$this->cachePlot($plot);
@@ -187,6 +187,7 @@ class YAMLDataProvider extends DataProvider
 		}
 		return null;
 	}
+
 	public function close(){
 		unset($this->yaml);
 	}

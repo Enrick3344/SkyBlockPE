@@ -1,8 +1,8 @@
 <?php
+
 namespace MyPlot;
 
-class Plot
-{
+class Plot{
 	public $levelName, $X, $Z, $name = "", $owner = "", $helpers = [], $denied = [], $biome = "PLAINS", $id = -1;
 
 	/**
@@ -16,7 +16,7 @@ class Plot
 	 * @param string $biome
 	 * @param int $id
 	 */
-	public function __construct(string $levelName, int $X, int $Z, string $name = "", string $owner = "", array $helpers = [], array $denied = [], string $biome = "PLAINS", int $id = -1) {
+	public function __construct(string $levelName, int $X, int $Z, string $name = "", string $owner = "", array $helpers = [], array $denied = [], string $biome = "PLAINS", int $id = -1){
 		$this->levelName = $levelName;
 		$this->X = $X;
 		$this->Z = $Z;
@@ -33,7 +33,7 @@ class Plot
 	 * @param string $username
 	 * @return bool
 	 */
-	public function isHelper($username) {
+	public function isHelper($username){
 		return in_array($username, $this->helpers);
 	}
 
@@ -42,8 +42,8 @@ class Plot
 	 * @param string $username
 	 * @return bool
 	 */
-	public function addHelper($username) {
-		if (!$this->isHelper($username)) {
+	public function addHelper($username){
+		if (!$this->isHelper($username)){
 			$this->unDenyPlayer($username);
 			$this->helpers[] = $username;
 			return true;
@@ -56,12 +56,12 @@ class Plot
 	 * @param string $username
 	 * @return bool
 	 */
-	public function removeHelper($username) {
-		if(!$this->isHelper($username)) {
+	public function removeHelper($username){
+		if (!$this->isHelper($username)){
 			return false;
 		}
 		$key = array_search($username, $this->helpers);
-		if ($key === false) {
+		if ($key === false){
 			return false;
 		}
 		unset($this->helpers[$key]);
@@ -73,7 +73,7 @@ class Plot
 	 * @param string $username
 	 * @return bool
 	 */
-	public function isDenied($username) {
+	public function isDenied($username){
 		return in_array($username, $this->denied);
 	}
 
@@ -82,8 +82,8 @@ class Plot
 	 * @param string $username
 	 * @return bool
 	 */
-	public function denyPlayer($username) {
-		if (!$this->isDenied($username)) {
+	public function denyPlayer($username){
+		if (!$this->isDenied($username)){
 			$this->removeHelper($username);
 			$this->denied[] = $username;
 			return true;
@@ -96,19 +96,19 @@ class Plot
 	 * @param string $username
 	 * @return bool
 	 */
-	public function unDenyPlayer($username) {
-		if(!$this->isDenied($username)) {
+	public function unDenyPlayer($username){
+		if (!$this->isDenied($username)){
 			return false;
 		}
 		$key = array_search($username, $this->denied);
-		if ($key === false) {
+		if ($key === false){
 			return false;
 		}
 		unset($this->denied[$key]);
 		return true;
 	}
 
-	public function __toString() {
+	public function __toString(){
 		return "(" . $this->X . ";" . $this->Z . ")";
 	}
 }

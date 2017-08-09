@@ -1,17 +1,17 @@
 <?php
+
 namespace MyPlot\subcommand;
 
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
-class ClearSubCommand extends SubCommand
-{
+class ClearSubCommand extends SubCommand{
 	/**
 	 * @param CommandSender $sender
 	 * @return bool
 	 */
-	public function canUse(CommandSender $sender) {
+	public function canUse(CommandSender $sender){
 		return ($sender instanceof Player) and $sender->hasPermission("myplot.command.clear");
 	}
 
@@ -20,31 +20,31 @@ class ClearSubCommand extends SubCommand
 	 * @param string[] $args
 	 * @return bool
 	 */
-	public function execute(CommandSender $sender, array $args) {
+	public function execute(CommandSender $sender, array $args){
 		$plot = $this->getPlugin()->getPlotByPosition($sender->getPosition());
-		if ($plot === null) {
+		if ($plot === null){
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notinplot"));
 			return true;
 		}
-		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("myplot.admin.clear")) {
+		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("myplot.admin.clear")){
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notowner"));
 			return true;
 		}
-		if (isset($args[0]) and $args[0] == $this->translateString("confirm")) {
+		if (isset($args[0]) and $args[0] == $this->translateString("confirm")){
 			$economy = $this->getPlugin()->getEconomyProvider();
 			$price = $this->getPlugin()->getLevelSettings($plot->levelName)->clearPrice;
-			if ($economy !== null and !$economy->reduceMoney($sender, $price)) {
+			if ($economy !== null and !$economy->reduceMoney($sender, $price)){
 				$sender->sendMessage(TextFormat::RED . $this->translateString("clear.nomoney"));
 				return true;
 			}
 
 			$maxBlocksPerTick = $this->getPlugin()->getConfig()->get("ClearBlocksPerTick", 256);
-			if ($this->getPlugin()->clearPlot($plot, $maxBlocksPerTick)) {
+			if ($this->getPlugin()->clearPlot($plot, $maxBlocksPerTick)){
 				$sender->sendMessage($this->translateString("clear.success"));
-			} else {
+			} else{
 				$sender->sendMessage(TextFormat::RED . $this->translateString("error"));
 			}
-		} else {
+		} else{
 			$plotId = TextFormat::GREEN . $plot . TextFormat::WHITE;
 			$sender->sendMessage($this->translateString("clear.confirm", [$plotId]));
 		}

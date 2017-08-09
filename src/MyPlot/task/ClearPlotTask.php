@@ -1,21 +1,21 @@
 <?php
+
 namespace MyPlot\task;
 
+use MyPlot\MyPlot;
+use MyPlot\Plot;
 use pocketmine\block\Block;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\scheduler\PluginTask;
 
-use MyPlot\MyPlot;
-use MyPlot\Plot;
-
-class ClearPlotTask extends PluginTask {
+class ClearPlotTask extends PluginTask{
 	/** @var MyPlot $plugin */
 	private $plugin;
 
 	private $level, $height, $bottomBlock, $plotFillBlock, $plotFloorBlock, $plotBeginPos, $xMax, $zMax, $maxBlocksPerTick, $pos;
 
-	public function __construct(MyPlot $plugin, Plot $plot, $maxBlocksPerTick = 256) {
+	public function __construct(MyPlot $plugin, Plot $plot, $maxBlocksPerTick = 256){
 		parent::__construct($plugin);
 		$this->plotBeginPos = $plugin->getPlotPosition($plot);
 		$this->level = $this->plotBeginPos->getLevel();
@@ -33,34 +33,34 @@ class ClearPlotTask extends PluginTask {
 		$this->plugin->getLogger()->debug("Clear Task started at plot {$plot->X};{$plot->Z}");
 	}
 
-	public function onRun(int $currentTick) {
-		foreach ($this->level->getEntities() as $entity) {
-			if (($plot = $this->plugin->getPlotByPosition($entity)) != null) {
-				if ($plot->X === $this->plotBeginPos->x and $plot->Z === $this->plotBeginPos->z) {
-					if (!$entity instanceof Player) {
+	public function onRun(int $currentTick){
+		foreach ($this->level->getEntities() as $entity){
+			if (($plot = $this->plugin->getPlotByPosition($entity)) != null){
+				if ($plot->X === $this->plotBeginPos->x and $plot->Z === $this->plotBeginPos->z){
+					if (!$entity instanceof Player){
 						$entity->close();
-					}else{
+					} else{
 						$this->plugin->teleportPlayerToPlot($entity, $plot);
 					}
 				}
 			}
 		}
 		$blocks = 0;
-		while ($this->pos->x < $this->xMax) {
-			while ($this->pos->z < $this->zMax) {
-				while ($this->pos->y < 128) {
-					if ($this->pos->y === 0) {
+		while ($this->pos->x < $this->xMax){
+			while ($this->pos->z < $this->zMax){
+				while ($this->pos->y < 128){
+					if ($this->pos->y === 0){
 						$block = $this->bottomBlock;
-					} elseif ($this->pos->y < $this->height) {
+					} elseif ($this->pos->y < $this->height){
 						$block = $this->plotFillBlock;
-					} elseif ($this->pos->y === $this->height) {
+					} elseif ($this->pos->y === $this->height){
 						$block = $this->plotFloorBlock;
-					} else {
+					} else{
 						$block = Block::get(0);
 					}
 					$this->level->setBlock($this->pos, $block, false, false);
 					$blocks++;
-					if ($blocks === $this->maxBlocksPerTick) {
+					if ($blocks === $this->maxBlocksPerTick){
 						$this->getOwner()->getServer()->getScheduler()->scheduleDelayedTask($this, 1);
 						return;
 					}
@@ -72,9 +72,9 @@ class ClearPlotTask extends PluginTask {
 			$this->pos->z = $this->plotBeginPos->z;
 			$this->pos->x++;
 		}
-		foreach ( $this->level->getTiles() as $tile) {
-			if (($plot = $this->plugin->getPlotByPosition($tile)) != null) {
-				if ($plot->X === $this->plotBeginPos->x and $plot->Z === $this->plotBeginPos->z) {
+		foreach ($this->level->getTiles() as $tile){
+			if (($plot = $this->plugin->getPlotByPosition($tile)) != null){
+				if ($plot->X === $this->plotBeginPos->x and $plot->Z === $this->plotBeginPos->z){
 					$tile->close();
 				}
 			}

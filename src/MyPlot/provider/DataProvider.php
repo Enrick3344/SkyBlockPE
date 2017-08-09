@@ -1,11 +1,11 @@
 <?php
+
 namespace MyPlot\provider;
 
 use MyPlot\MyPlot;
 use MyPlot\Plot;
 
-abstract class DataProvider
-{
+abstract class DataProvider{
 	/** @var Plot[] */
 	private $cache = [];
 	/** @var int */
@@ -13,7 +13,7 @@ abstract class DataProvider
 	/** @var MyPlot */
 	protected $plugin;
 
-	public function __construct(MyPlot $plugin, int $cacheSize = 0) {
+	public function __construct(MyPlot $plugin, int $cacheSize = 0){
 		$this->plugin = $plugin;
 		$this->cacheSize = $cacheSize;
 	}
@@ -21,12 +21,12 @@ abstract class DataProvider
 	/**
 	 * @param Plot $plot
 	 */
-	protected final function cachePlot(Plot $plot) {
-		if ($this->cacheSize > 0) {
+	protected final function cachePlot(Plot $plot){
+		if ($this->cacheSize > 0){
 			$key = $plot->levelName . ';' . $plot->X . ';' . $plot->Z;
-			if (isset($this->cache[$key])) {
+			if (isset($this->cache[$key])){
 				unset($this->cache[$key]);
-			} elseif($this->cacheSize <= count($this->cache)) {
+			} elseif ($this->cacheSize <= count($this->cache)){
 				array_pop($this->cache);
 			}
 			$this->cache = array_merge(array($key => clone $plot), $this->cache);
@@ -40,10 +40,10 @@ abstract class DataProvider
 	 * @param $Z
 	 * @return Plot|null
 	 */
-	protected final function getPlotFromCache(string $levelName, int $X, int $Z) {
-		if ($this->cacheSize > 0) {
+	protected final function getPlotFromCache(string $levelName, int $X, int $Z){
+		if ($this->cacheSize > 0){
 			$key = $levelName . ';' . $X . ';' . $Z;
-			if (isset($this->cache[$key])) {
+			if (isset($this->cache[$key])){
 				#$this->plugin->getLogger()->debug("Plot {$X};{$Z} was loaded from the cache");
 				return $this->cache[$key];
 			}
@@ -55,13 +55,13 @@ abstract class DataProvider
 	 * @param Plot $plot
 	 * @return bool
 	 */
-	public abstract function savePlot(Plot $plot) : bool;
+	public abstract function savePlot(Plot $plot): bool;
 
 	/**
 	 * @param Plot $plot
 	 * @return bool
 	 */
-	public abstract function deletePlot(Plot $plot) : bool;
+	public abstract function deletePlot(Plot $plot): bool;
 
 	/**
 	 * @param string $levelName
@@ -69,14 +69,14 @@ abstract class DataProvider
 	 * @param int $Z
 	 * @return Plot
 	 */
-	public abstract function getPlot(string $levelName, int $X, int $Z) : Plot;
+	public abstract function getPlot(string $levelName, int $X, int $Z): Plot;
 
 	/**
 	 * @param string $owner
 	 * @param string $levelName
 	 * @return Plot[]
 	 */
-	public abstract function getPlotsByOwner(string $owner, string $levelName = "") : array;
+	public abstract function getPlotsByOwner(string $owner, string $levelName = ""): array;
 
 	/**
 	 * @param string $levelName
@@ -93,18 +93,18 @@ abstract class DataProvider
 	 * @param array[] $plots
 	 * @return array|null
 	 */
-	protected static function findEmptyPlotSquared(int $a, int $b, array $plots) {
+	protected static function findEmptyPlotSquared(int $a, int $b, array $plots){
 		if (!isset($plots[$a][$b])) return array($a, $b);
 		if (!isset($plots[$b][$a])) return array($b, $a);
-		if ($a !== 0) {
+		if ($a !== 0){
 			if (!isset($plots[-$a][$b])) return array(-$a, $b);
 			if (!isset($plots[$b][-$a])) return array($b, -$a);
 		}
-		if ($b !== 0) {
+		if ($b !== 0){
 			if (!isset($plots[-$b][$a])) return array(-$b, $a);
 			if (!isset($plots[$a][-$b])) return array($a, -$b);
 		}
-		if ($a | $b === 0) {
+		if ($a | $b === 0){
 			if (!isset($plots[-$a][-$b])) return array(-$a, -$b);
 			if (!isset($plots[-$b][-$a])) return array(-$b, -$a);
 		}

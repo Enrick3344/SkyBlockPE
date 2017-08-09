@@ -1,17 +1,17 @@
 <?php
+
 namespace MyPlot\subcommand;
 
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
-class InfoSubCommand extends SubCommand
-{
+class InfoSubCommand extends SubCommand{
 	/**
 	 * @param CommandSender $sender
 	 * @return bool
 	 */
-	public function canUse(CommandSender $sender) {
+	public function canUse(CommandSender $sender){
 		return ($sender instanceof Player) and $sender->hasPermission("myplot.command.info");
 	}
 
@@ -20,9 +20,9 @@ class InfoSubCommand extends SubCommand
 	 * @param string[] $args
 	 * @return bool
 	 */
-	public function execute(CommandSender $sender, array $args) {
+	public function execute(CommandSender $sender, array $args){
 		$plot = $this->getPlugin()->getPlotByPosition($sender->getPosition());
-		if ($plot === null) {
+		if ($plot === null){
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notinplot"));
 			return true;
 		}
