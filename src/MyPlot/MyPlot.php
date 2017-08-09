@@ -373,13 +373,13 @@ class MyPlot extends PluginBase{
 	 * @return int
 	 */
 	public function getMaxPlotsOfPlayer(Player $player): int{
-		if ($player->hasPermission("myplot.claimplots.unlimited"))
+		if ($player->hasPermission("skyblock.claimplots.unlimited"))
 			return PHP_INT_MAX;
 		/** @var Permission[] $perms */
 		$perms = array_merge($this->getServer()->getPluginManager()->getDefaultPermissions($player->isOp()),
 			$player->getEffectivePermissions());
 		$perms = array_filter($perms, function ($name){
-			return (substr($name, 0, 18) === "myplot.claimplots.");
+			return (substr($name, 0, 18) === "skyblock.claimplots.");
 		}, ARRAY_FILTER_USE_KEY);
 		if (count($perms) == 0)
 			return 0;

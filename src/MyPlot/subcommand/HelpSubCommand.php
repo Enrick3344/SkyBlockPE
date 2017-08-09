@@ -21,7 +21,7 @@ class HelpSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return $sender->hasPermission("myplot.command.help");
+		return $sender->hasPermission("skyblock.command.help");
 	}
 
 	/**

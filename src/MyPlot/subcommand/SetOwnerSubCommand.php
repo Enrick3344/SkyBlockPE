@@ -12,7 +12,7 @@ class SetOwnerSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return ($sender instanceof Player) and $sender->hasPermission("myplot.admin.setowner");
+		return ($sender instanceof Player) and $sender->hasPermission("skyblock.admin.setowner");
 	}
 
 	/**

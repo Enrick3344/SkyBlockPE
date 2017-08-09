@@ -12,7 +12,7 @@ class ResetSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return ($sender instanceof Player) and $sender->hasPermission("myplot.command.reset");
+		return ($sender instanceof Player) and $sender->hasPermission("skyblock.command.reset");
 	}
 
 	/**
@@ -26,7 +26,7 @@ class ResetSubCommand extends SubCommand{
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notinplot"));
 			return true;
 		}
-		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("myplot.admin.reset")){
+		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("skyblock.admin.reset")){
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notowner"));
 			return true;
 		}

@@ -12,7 +12,7 @@ class AutoSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return ($sender instanceof Player) and $sender->hasPermission("myplot.command.auto");
+		return ($sender instanceof Player) and $sender->hasPermission("skyblock.command.auto");
 	}
 
 	/**

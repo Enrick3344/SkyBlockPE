@@ -12,7 +12,7 @@ class ClearSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return ($sender instanceof Player) and $sender->hasPermission("myplot.command.clear");
+		return ($sender instanceof Player) and $sender->hasPermission("skyblock.command.clear");
 	}
 
 	/**
@@ -26,7 +26,7 @@ class ClearSubCommand extends SubCommand{
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notinplot"));
 			return true;
 		}
-		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("myplot.admin.clear")){
+		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("skyblock.admin.clear")){
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notowner"));
 			return true;
 		}

@@ -32,7 +32,7 @@ class EventListener implements Listener{
 	 * @param LevelLoadEvent $event
 	 */
 	public function onLevelLoad(LevelLoadEvent $event){
-		if ($event->getLevel()->getProvider()->getGenerator() == "myplot"){
+		if ($event->getLevel()->getProvider()->getGenerator() == "skyblock"){
 			$this->plugin->getLogger()->debug("MyPlot level " . $event->getLevel()->getFolderName() . " loaded!");
 			$settings = $event->getLevel()->getProvider()->getGeneratorOptions();
 			if (!isset($settings["preset"]) or empty($settings["preset"])){
@@ -121,7 +121,7 @@ class EventListener implements Listener{
 		$plot = $this->plugin->getPlotByPosition($event->getBlock());
 		if ($plot !== null){
 			$username = $event->getPlayer()->getName();
-			if ($plot->owner == $username or $plot->isHelper($username) or $plot->isHelper("*") or $event->getPlayer()->hasPermission("myplot.admin.build.plot")){
+			if ($plot->owner == $username or $plot->isHelper($username) or $plot->isHelper("*") or $event->getPlayer()->hasPermission("skyblock.admin.build.plot")){
 				if (!($event instanceof PlayerInteractEvent and $event->getBlock() instanceof Sapling))
 					return;
 
@@ -143,7 +143,7 @@ class EventListener implements Listener{
 					return;
 				}
 			}
-		} elseif ($event->getPlayer()->hasPermission("myplot.admin.build.road")){
+		} elseif ($event->getPlayer()->hasPermission("skyblock.admin.build.road")){
 			return;
 		}
 		$event->setCancelled();

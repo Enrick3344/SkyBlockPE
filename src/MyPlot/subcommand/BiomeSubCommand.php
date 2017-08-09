@@ -26,7 +26,7 @@ class BiomeSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return ($sender instanceof Player) and $sender->hasPermission("myplot.command.biome");
+		return ($sender instanceof Player) and $sender->hasPermission("skyblock.command.biome");
 	}
 
 	/**
@@ -47,7 +47,7 @@ class BiomeSubCommand extends SubCommand{
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notinplot"));
 			return true;
 		}
-		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("myplot.admin.biome")){
+		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("skyblock.admin.biome")){
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notowner"));
 			return true;
 		}

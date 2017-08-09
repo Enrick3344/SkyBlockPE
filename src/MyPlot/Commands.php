@@ -41,7 +41,7 @@ class Commands extends PluginCommand{
 	public function __construct(MyPlot $plugin){
 		$this->plugin = $plugin;
 		parent::__construct($plugin->getLanguage()->get("command.name"), $plugin);
-		$this->setPermission("myplot.command");
+		$this->setPermission("skyblock.command");
 		$this->setAliases([$plugin->getLanguage()->get("command.alias")]);
 		$this->setDescription($plugin->getLanguage()->get("command.desc"));
 		$this->setUsage($this->plugin->getLanguage()->get("command.usage"));

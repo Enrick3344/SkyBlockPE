@@ -12,7 +12,7 @@ class DisposeSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return ($sender instanceof Player) and $sender->hasPermission("myplot.command.dispose");
+		return ($sender instanceof Player) and $sender->hasPermission("skyblock.command.dispose");
 	}
 
 	/**
@@ -29,7 +29,7 @@ class DisposeSubCommand extends SubCommand{
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notinplot"));
 			return true;
 		}
-		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("myplot.admin.dispose")){
+		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("skyblock.admin.dispose")){
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notowner"));
 			return true;
 		}

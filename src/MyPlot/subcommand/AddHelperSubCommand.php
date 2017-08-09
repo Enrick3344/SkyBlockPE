@@ -12,7 +12,7 @@ class AddHelperSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return ($sender instanceof Player) and $sender->hasPermission("myplot.command.addhelper");
+		return ($sender instanceof Player) and $sender->hasPermission("skyblock.command.addhelper");
 	}
 
 	/**
@@ -30,7 +30,7 @@ class AddHelperSubCommand extends SubCommand{
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notinplot"));
 			return true;
 		}
-		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("myplot.admin.addhelper")){
+		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("skyblock.admin.addhelper")){
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notowner"));
 			return true;
 		}

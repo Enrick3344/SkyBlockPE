@@ -13,7 +13,7 @@ class HomeSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return ($sender instanceof Player) and $sender->hasPermission("myplot.command.home");
+		return ($sender instanceof Player) and $sender->hasPermission("skyblock.command.home");
 	}
 
 	/**

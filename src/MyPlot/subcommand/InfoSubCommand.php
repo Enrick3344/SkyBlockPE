@@ -12,7 +12,7 @@ class InfoSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return ($sender instanceof Player) and $sender->hasPermission("myplot.command.info");
+		return ($sender instanceof Player) and $sender->hasPermission("skyblock.command.info");
 	}
 
 	/**

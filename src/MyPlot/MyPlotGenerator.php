@@ -58,7 +58,7 @@ class MyPlotGenerator extends Generator{
 	 * @return string
 	 */
 	public function getName(): string{
-		return "myplot";
+		return "skyblock";
 	}
 
 	/**

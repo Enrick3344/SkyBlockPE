@@ -12,7 +12,7 @@ class DenyPlayerSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return ($sender instanceof Player) and $sender->hasPermission("myplot.command.denyplayer");
+		return ($sender instanceof Player) and $sender->hasPermission("skyblock.command.denyplayer");
 	}
 
 	/**
@@ -31,7 +31,7 @@ class DenyPlayerSubCommand extends SubCommand{
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notinplot"));
 			return true;
 		}
-		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("myplot.admin.denyplayer")){
+		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("skyblock.admin.denyplayer")){
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notowner"));
 			return true;
 		}
@@ -45,7 +45,7 @@ class DenyPlayerSubCommand extends SubCommand{
 			$sender->sendMessage($this->translateString("denyplayer.notaplayer"));
 			return true;
 		}
-		if ($dplayer->hasPermission("myplot.admin.bypassdeny") or $dplayer->getName() == $plot->owner){
+		if ($dplayer->hasPermission("skyblock.admin.bypassdeny") or $dplayer->getName() == $plot->owner){
 			$sender->sendMessage($this->translateString("denyplayer.cannotdeny", [$dplayer->getName()]));
 			if ($dp instanceof Player)
 				$dp->sendMessage($this->translateString("denyplayer.attempteddeny", [$sender->getName()]));

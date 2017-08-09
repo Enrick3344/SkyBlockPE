@@ -11,7 +11,7 @@ class GenerateSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return $sender->hasPermission("myplot.command.generate");
+		return $sender->hasPermission("skyblock.command.generate");
 	}
 
 	/**

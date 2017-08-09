@@ -12,7 +12,7 @@ class RemoveHelperSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return ($sender instanceof Player) and $sender->hasPermission("myplot.command.removehelper");
+		return ($sender instanceof Player) and $sender->hasPermission("skyblock.command.removehelper");
 	}
 
 	/**
@@ -30,7 +30,7 @@ class RemoveHelperSubCommand extends SubCommand{
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notinplot"));
 			return true;
 		}
-		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("myplot.admin.removehelper")){
+		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("skyblock.admin.removehelper")){
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notowner"));
 			return true;
 		}

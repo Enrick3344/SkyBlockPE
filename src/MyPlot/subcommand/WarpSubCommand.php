@@ -12,7 +12,7 @@ class WarpSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return ($sender instanceof Player) and $sender->hasPermission("myplot.command.warp");
+		return ($sender instanceof Player) and $sender->hasPermission("skyblock.command.warp");
 	}
 
 	/**
@@ -37,7 +37,7 @@ class WarpSubCommand extends SubCommand{
 		}
 
 		$plot = $this->getPlugin()->getProvider()->getPlot($levelName, $plotIdArray[0], $plotIdArray[1]);
-		if ($plot->owner == "" and !$sender->hasPermission("myplot.admin.warp")){
+		if ($plot->owner == "" and !$sender->hasPermission("skyblock.admin.warp")){
 			$sender->sendMessage(TextFormat::RED . $this->translateString("warp.unclaimed"));
 			return true;
 		}

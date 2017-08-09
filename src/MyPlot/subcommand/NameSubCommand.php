@@ -12,7 +12,7 @@ class NameSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return ($sender instanceof Player) and $sender->hasPermission("myplot.command.name");
+		return ($sender instanceof Player) and $sender->hasPermission("skyblock.command.name");
 	}
 
 	/**
@@ -29,7 +29,7 @@ class NameSubCommand extends SubCommand{
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notinplot"));
 			return true;
 		}
-		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("myplot.admin.name")){
+		if ($plot->owner !== $sender->getName() and !$sender->hasPermission("skyblock.admin.name")){
 			$sender->sendMessage(TextFormat::RED . $this->translateString("notowner"));
 			return true;
 		}

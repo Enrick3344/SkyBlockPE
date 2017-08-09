@@ -12,7 +12,7 @@ class ListSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function canUse(CommandSender $sender){
-		return ($sender instanceof Player) and $sender->hasPermission("myplot.command.list");
+		return ($sender instanceof Player) and $sender->hasPermission("skyblock.command.list");
 	}
 
 	/**
@@ -21,7 +21,7 @@ class ListSubCommand extends SubCommand{
 	 * @return bool
 	 */
 	public function execute(CommandSender $sender, array $args){
-		if ($sender->hasPermission("myplot.admin.list")){
+		if ($sender->hasPermission("skyblock.admin.list")){
 			if (!empty($args)){
 				foreach ($this->getPlugin()->getPlotLevels() as $levelName => $settings){
 					$plots = $this->getPlugin()->getPlotsOfPlayer($args[0], $levelName);
@@ -46,7 +46,7 @@ class ListSubCommand extends SubCommand{
 					return true;
 				}
 			}
-		} elseif ($sender->hasPermission("myplot.command.list")){
+		} elseif ($sender->hasPermission("skyblock.command.list")){
 			foreach ($this->getPlugin()->getPlotLevels() as $levelName => $settings){
 				$plots = $this->getPlugin()->getPlotsOfPlayer($sender->getName(), $levelName);
 				foreach ($plots as $plot){
