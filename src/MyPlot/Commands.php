@@ -47,26 +47,21 @@ class Commands extends PluginCommand{
 		$this->setUsage($this->plugin->getLanguage()->get("command.usage"));
 
 		$this->loadSubCommand(new HelpSubCommand($plugin, "help", $this));
-		$this->loadSubCommand(new ClaimSubCommand($plugin, "claim"));
 		$this->loadSubCommand(new GenerateSubCommand($plugin, "generate"));
 		$this->loadSubCommand(new InfoSubCommand($plugin, "info"));
 		$this->loadSubCommand(new AddHelperSubCommand($plugin, "addhelper"));
 		$this->loadSubCommand(new RemoveHelperSubCommand($plugin, "removehelper"));
-		$this->loadSubCommand(new AutoSubCommand($plugin, "auto"));
-		$this->loadSubCommand(new ClearSubCommand($plugin, "clear"));
-		$this->loadSubCommand(new DisposeSubCommand($plugin, "dispose"));
+		$this->loadSubCommand(new AutoSubCommand($plugin, "auto"));//create
 		$this->loadSubCommand(new ResetSubCommand($plugin, "reset"));
 		$this->loadSubCommand(new BiomeSubCommand($plugin, "biome"));
 		$this->loadSubCommand(new HomeSubCommand($plugin, "home"));
-		$this->loadSubCommand(new HomesSubCommand($plugin, "homes"));
 		$this->loadSubCommand(new NameSubCommand($plugin, "name"));
-		$this->loadSubCommand(new GiveSubCommand($plugin, "give"));
 		$this->loadSubCommand(new WarpSubCommand($plugin, "warp"));
 		$this->loadSubCommand(new MiddleSubCommand($plugin, "middle"));
-		$this->loadSubCommand(new DenyPlayerSubCommand($plugin, "denyplayer"));
-		$this->loadSubCommand(new UnDenySubCommand($plugin, "undenyplayer"));
+		$this->loadSubCommand(new DenyPlayerSubCommand($plugin, "denyplayer"));//trust
+		$this->loadSubCommand(new UnDenySubCommand($plugin, "undenyplayer"));//untrust
 		$this->loadSubCommand(new SetOwnerSubCommand($plugin, "setowner"));
-		$this->loadSubCommand(new ListSubCommand($plugin, "list"));
+		// level, challenges, top, limits, togglewarp, sethome, setwarp
 		$this->plugin->getLogger()->debug("Commands Registered to MyPlot");
 	}
 
