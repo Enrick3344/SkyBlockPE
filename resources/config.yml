@@ -74,7 +74,7 @@ DefaultWorld:
   # The size of a plot
   PlotSize: 32
   # The height of a plot
-  GroundHeight: 64
+  GroundHeight: 0
   # The width of the road
   RoadWidth: 7
 

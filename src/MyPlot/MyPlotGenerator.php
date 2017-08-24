@@ -9,19 +9,20 @@ use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 
 class MyPlotGenerator extends Generator{
-	/** @var ChunkManager $level */
-	private $level;
-	/** @var string[] $settings */
-	private $settings;
-
+	const PLOT = 0;
+	const ROAD = 1;
+	const WALL = 2;
+	const ISLAND = 3;
 	/** @var Block */
 	public $roadBlock, $wallBlock, $plotFloorBlock, $plotFillBlock, $bottomBlock;
 	/** @var int */
 	public $roadWidth = 7, $plotSize = 32, $groundHeight = 64;
-
-	const PLOT = 0;
-	const ROAD = 1;
-	const WALL = 2;
+	/** @var Random */
+	protected $random;
+	/** @var ChunkManager $level */
+	private $level;
+	/** @var string[] $settings */
+	private $settings;
 
 	public function __construct(array $settings = []){
 		if (isset($settings["preset"])){
@@ -38,9 +39,9 @@ class MyPlotGenerator extends Generator{
 		$this->plotFillBlock = PlotLevelSettings::parseBlock($settings, "PlotFillBlock", new Block(3));
 		$this->bottomBlock = PlotLevelSettings::parseBlock($settings, "BottomBlock", new Block(7));
 
-		$this->roadWidth = PlotLevelSettings::parseNumber($settings, "RoadWidth", 7);
-		$this->plotSize = PlotLevelSettings::parseNumber($settings, "PlotSize", 32);
-		$this->groundHeight = PlotLevelSettings::parseNumber($settings, "GroundHeight", 64);
+		$this->roadWidth = PlotLevelSettings::parseNumber($settings, "RoadWidth", 7);//TODO keep
+		$this->plotSize = PlotLevelSettings::parseNumber($settings, "PlotSize", 32);//TODO keep
+		$this->groundHeight = PlotLevelSettings::parseNumber($settings, "GroundHeight", 0);
 		$this->settings = [];
 		$this->settings["preset"] = json_encode([
 			"RoadBlock" => $this->roadBlock->getId() . (($meta = $this->roadBlock->getDamage()) === 0 ? '' : ':' . $meta),
@@ -74,6 +75,7 @@ class MyPlotGenerator extends Generator{
 	 */
 	public function init(ChunkManager $level, Random $random){
 		$this->level = $level;
+		$this->random = $random;
 	}
 
 	/**
@@ -84,33 +86,16 @@ class MyPlotGenerator extends Generator{
 		$shape = $this->getShape($chunkX << 4, $chunkZ << 4);
 		$chunk = $this->level->getChunk($chunkX, $chunkZ);
 
-		$bottomBlockId = $this->bottomBlock->getId();
-		$bottomBlockMeta = $this->bottomBlock->getDamage();
-		$plotFillBlockId = $this->plotFillBlock->getId();
-		$plotFillBlockMeta = $this->plotFillBlock->getDamage();
-		$plotFloorBlockId = $this->plotFloorBlock->getId();
-		$plotFloorBlockMeta = $this->plotFloorBlock->getDamage();
 		$roadBlockId = $this->roadBlock->getId();
 		$roadBlockMeta = $this->roadBlock->getDamage();
-		$wallBlockId = $this->wallBlock->getId();
-		$wallBlockMeta = $this->wallBlock->getDamage();
 		$groundHeight = $this->groundHeight;
 
 		for ($Z = 0; $Z < 16; ++$Z){
 			for ($X = 0; $X < 16; ++$X){
 				$chunk->setBiomeId($X, $Z, 1);
-				$chunk->setBlock($X, 0, $Z, $bottomBlockId, $bottomBlockMeta);
-				for ($y = 1; $y < $groundHeight; ++$y){
-					$chunk->setBlock($X, $y, $Z, $plotFillBlockId, $plotFillBlockMeta);
-				}
 				$type = $shape[($Z << 4) | $X];
-				if ($type === self::PLOT){
-					$chunk->setBlock($X, $groundHeight, $Z, $plotFloorBlockId, $plotFloorBlockMeta);
-				} elseif ($type === self::ROAD){
+				if ($type !== self::ROAD && $type !== self::PLOT){
 					$chunk->setBlock($X, $groundHeight, $Z, $roadBlockId, $roadBlockMeta);
-				} else{
-					$chunk->setBlock($X, $groundHeight, $Z, $roadBlockId, $roadBlockMeta);
-					$chunk->setBlock($X, $groundHeight + 1, $Z, $wallBlockId, $wallBlockMeta);
 				}
 			}
 		}
@@ -118,6 +103,7 @@ class MyPlotGenerator extends Generator{
 		$chunk->setZ($chunkZ);
 		$chunk->setGenerated();
 		$this->level->setChunk($chunkX, $chunkZ, $chunk);
+		$this->populateChunk($chunkX, $chunkZ);
 	}
 
 	/**
@@ -168,6 +154,9 @@ class MyPlotGenerator extends Generator{
 					$type = $typeX;
 				} else{
 					$type = self::ROAD;
+				}
+				if ($X == floor($this->plotSize / 2) && $Z == floor($this->plotSize / 2)){
+					$type = self::ISLAND;
 				}
 				$shape[($z << 4) | $x] = $type;
 			}

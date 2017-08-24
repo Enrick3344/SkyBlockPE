@@ -23,7 +23,7 @@ abstract class SubCommand implements PluginIdentifiableCommand{
 	}
 
 	/**
-	 * @return MyPlot
+	 * @return MyPlot|Plugin
 	 */
 	public final function getPlugin(): Plugin{
 		return $this->plugin;

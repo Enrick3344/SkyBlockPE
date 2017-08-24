@@ -5,17 +5,11 @@ namespace MyPlot;
 use MyPlot\subcommand\AddHelperSubCommand;
 use MyPlot\subcommand\AutoSubCommand;
 use MyPlot\subcommand\BiomeSubCommand;
-use MyPlot\subcommand\ClaimSubCommand;
-use MyPlot\subcommand\ClearSubCommand;
 use MyPlot\subcommand\DenyPlayerSubCommand;
-use MyPlot\subcommand\DisposeSubCommand;
 use MyPlot\subcommand\GenerateSubCommand;
-use MyPlot\subcommand\GiveSubCommand;
 use MyPlot\subcommand\HelpSubCommand;
-use MyPlot\subcommand\HomesSubCommand;
 use MyPlot\subcommand\HomeSubCommand;
 use MyPlot\subcommand\InfoSubCommand;
-use MyPlot\subcommand\ListSubCommand;
 use MyPlot\subcommand\MiddleSubCommand;
 use MyPlot\subcommand\NameSubCommand;
 use MyPlot\subcommand\RemoveHelperSubCommand;
@@ -27,6 +21,7 @@ use MyPlot\subcommand\WarpSubCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
 use pocketmine\utils\TextFormat;
+
 
 class Commands extends PluginCommand{
 	/** @var SubCommand[] */

@@ -16,7 +16,7 @@ class DisposeSubCommand extends SubCommand{
 	}
 
 	/**
-	 * @param Player $sender
+	 * @param CommandSender|Player $sender
 	 * @param string[] $args
 	 * @return bool
 	 */
