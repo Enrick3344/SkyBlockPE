@@ -155,9 +155,6 @@ class MyPlotGenerator extends Generator{
 				} else{
 					$type = self::ROAD;
 				}
-				if ($X == floor($this->plotSize / 2) && $Z == floor($this->plotSize / 2)){
-					$type = self::ISLAND;
-				}
 				$shape[($z << 4) | $x] = $type;
 			}
 		}

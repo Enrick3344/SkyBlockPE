@@ -3,44 +3,29 @@
 namespace MyPlot;
 
 use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
+use pocketmine\item\Item;
 use pocketmine\level\ChunkManager;
-use pocketmine\level\format\Chunk;
-use pocketmine\level\generator\Generator;
 use pocketmine\level\generator\object\Tree;
-use pocketmine\level\generator\populator\Populator;
+use pocketmine\level\Level;
+use pocketmine\level\Position;
 use pocketmine\math\Vector3;
+use pocketmine\nbt\NBT;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\IntTag;
+use pocketmine\nbt\tag\ListTag;
+use pocketmine\nbt\tag\StringTag;
+use pocketmine\tile\Tile;
 use pocketmine\utils\Random;
 
-class SkyBlockStructure extends Populator{
-	/** @var null|MyPlotGenerator $generator */
-	public $generator = null;
-
-	public function __construct(Generator $gen){
-		$this->generator = $gen;
-	}
-
-	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random){
-		$chunk = $level->getChunk($chunkX, $chunkZ);
-		$shape = $this->generator->getShape($chunkX << 4, $chunkZ << 4);
-		for ($Z = 0; $Z < 16; ++$Z){
-			for ($X = 0; $X < 16; ++$X){
-				$type = $shape[($Z << 4) | $X];
-				if ($type === MyPlotGenerator::ISLAND){
-					self::placeObject($level, $chunk, $X, $Z);
-				}
-			}
-		}
-	}
+class SkyBlockStructure{
 
 	/**
 	 *
-	 * @param ChunkManager $level
-	 * @param Chunk $chunk
-	 * @param int $Xofchunk
-	 * @param int $Zofchunk
+	 * @param ChunkManager|Level $level
+	 * @param Vector3 $vec
 	 */
-	public static function placeObject(ChunkManager $level, $chunk, $Xofchunk, $Zofchunk){
-		$vec = new Vector3($chunk->getX() * 16 + $Xofchunk, 0, $chunk->getZ() * 16 + $Zofchunk);
+	public static function placeObject(Level $level, Vector3 $vec){
 		$vec = $vec->subtract(7, 0, 7); // fix offset
 		print $vec . PHP_EOL;
 		for ($x = 4; $x < 11; $x++){
@@ -63,7 +48,22 @@ class SkyBlockStructure extends Populator{
 		$level->setBlockIdAt($vec->x + 7, 66, $vec->z + 7, Block::SAND); // 2
 		$level->setBlockIdAt($vec->x + 7, 67, $vec->z + 7, Block::SAND); // 3
 		if ($level->getBlockIdAt($vec->x + 7, 69, $vec->z + 7) !== Block::LOG)
-			Tree::growTree($level, $vec->x + 7, 69, $vec->z + 7, new Random(), 0);
+			Tree::growTree($level, $vec->x + 7, 69, $vec->z + 7, new Random(0), 0);
+		$chestpos = new Position($vec->x + 8, 69, $vec->z + 7, $level);
+		$block = BlockFactory::get(Block::CHEST, 5);
+		$level->setBlock($chestpos, $block);
+		$nbt = new CompoundTag("", [
+			new ListTag("Items", []),
+			new StringTag("id", Tile::CHEST),
+			new IntTag("x", $chestpos->x),
+			new IntTag("y", $chestpos->y),
+			new IntTag("z", $chestpos->z)
+		]);
+		$nbt->Items->setTagType(NBT::TAG_Compound);
+		/** @var \pocketmine\tile\Chest $chest */
+		$chest = Tile::createTile("Chest", $level, $nbt);
+		$chest->getInventory()->addItem(new Item(Item::ICE, 0, 2), new Item(Item::BUCKET, 10, 1), new Item(Item::MELON_SLICE, 0, 1), new Item(Item::CACTUS, 0, 1), new Item(Item::RED_MUSHROOM, 0, 1), new Item(Item::BROWN_MUSHROOM, 0, 1), new Item(Item::PUMPKIN_SEEDS, 0, 1), new Item(Item::SUGARCANE, 0, 1), new Item(Item::SIGN, 0, 1));
+
 		$level->setBlockIdAt($vec->x + 4, 68, $vec->z + 4, Block::AIR); // 68
 		$level->setBlockIdAt($vec->x + 4, 68, $vec->z + 10, Block::AIR);
 		$level->setBlockIdAt($vec->x + 10, 68, $vec->z + 4, Block::AIR);

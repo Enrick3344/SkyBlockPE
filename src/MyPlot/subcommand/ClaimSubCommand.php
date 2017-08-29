@@ -2,6 +2,7 @@
 
 namespace MyPlot\subcommand;
 
+use MyPlot\SkyBlockStructure;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
@@ -62,7 +63,10 @@ class ClaimSubCommand extends SubCommand{
 		$plot->owner = $sender->getName();
 		$plot->name = $name;
 		if ($this->getPlugin()->savePlot($plot)){
+			$pos = 	$this->getPlugin()->getPlotMid($plot)->asPosition();
+			SkyBlockStructure::placeObject($level, $pos);
 			$sender->sendMessage($this->translateString("claim.success"));
+			$sender->addTitle($this->translateString("claim.success"), $this->translateString("claim.success2"));
 		} else{
 			$sender->sendMessage(TextFormat::RED . $this->translateString("error"));
 		}

@@ -5,6 +5,7 @@ namespace MyPlot;
 use MyPlot\subcommand\AddHelperSubCommand;
 use MyPlot\subcommand\AutoSubCommand;
 use MyPlot\subcommand\BiomeSubCommand;
+use MyPlot\subcommand\ClaimSubCommand;
 use MyPlot\subcommand\DenyPlayerSubCommand;
 use MyPlot\subcommand\GenerateSubCommand;
 use MyPlot\subcommand\HelpSubCommand;
@@ -56,6 +57,7 @@ class Commands extends PluginCommand{
 		$this->loadSubCommand(new DenyPlayerSubCommand($plugin, "denyplayer"));//trust
 		$this->loadSubCommand(new UnDenySubCommand($plugin, "undenyplayer"));//untrust
 		$this->loadSubCommand(new SetOwnerSubCommand($plugin, "setowner"));
+		$this->loadSubCommand(new ClaimSubCommand($plugin, "claim"));
 		// level, challenges, top, limits, togglewarp, sethome, setwarp
 		$this->plugin->getLogger()->debug("Commands Registered to MyPlot");
 	}

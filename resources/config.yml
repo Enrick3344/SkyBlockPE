@@ -20,7 +20,7 @@
 # Chinese ( PRC ) pack by @jerryzooyoyo
 # German language pack by @morpheusTP and @SalmonGER
 # Czech lanauge pack by @GamakCZ
-language: eng
+language: sky
 
 # The data provider where plot data is stored.
 # Current providers are: sqlite, mysql, json, and yaml.
@@ -74,7 +74,7 @@ DefaultWorld:
   # The size of a plot
   PlotSize: 32
   # The height of a plot
-  GroundHeight: 0
+  GroundHeight: 69
   # The width of the road
   RoadWidth: 7
 
