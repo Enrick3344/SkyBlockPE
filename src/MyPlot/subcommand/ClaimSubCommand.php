@@ -66,7 +66,7 @@ class ClaimSubCommand extends SubCommand{
 			$pos = 	$this->getPlugin()->getPlotMid($plot)->asPosition();
 			SkyBlockStructure::placeObject($level, $pos);
 			$sender->sendMessage($this->translateString("claim.success"));
-			$sender->addTitle($this->translateString("claim.success"), $this->translateString("claim.success2"));
+			$sender->addTitle($this->translateString("claim.success"));
 		} else{
 			$sender->sendMessage(TextFormat::RED . $this->translateString("error"));
 		}
